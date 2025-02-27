@@ -1,0 +1,46 @@
+const { chromium } = require("playwright");
+
+async function pref() {
+  try {
+    // Inicia o navegador Chromium
+    const browser = await chromium.launch({
+      headless: false, // Mostra o navegador
+      slowMo: 50, // Adiciona um pequeno delay para visualizar as ações
+    });
+
+    // Cria uma nova página
+    const page = await browser.newPage();
+
+    // Navega para a URL especificada
+    await page.goto("https://www.gp.srv.br/tributario/sinop/portal_login?1");
+
+    // Espera a página carregar completamente
+    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
+
+    // Exemplo de preenchimento de campos (substitua os seletores pelos corretos)
+    await page.fill("#vUSUARIO_LOGIN", "03.300.663/0001-10");
+    await page.fill("#vUSUARIO_SENHA", "923m5koq5");
+    await page.click("#BTN_ENTER3");
+    await page.waitForSelector("#TB_TITULO", { state: "visible" });
+    await page.click("#vBTN_FILTRO");
+    await page.fill(
+      "#vFILTRO_CONTRIBUINTE_PESSOA_CPF_CNPJ",
+      "26.581.728/0001-48"
+    );
+    await page.click("#BTN_CONSULTAR");
+
+    await page.waitForSelector(".Form.gx-masked", { state: "visible" }); //agudar o elecmento ficar visivel
+    await page.waitForSelector(".Form.gx-masked", { state: "hidden" }); //agudar o elecmento ficar invisivel
+    await page.click("#vSELECIONE_0001");
+    await page.waitForSelector("#IMG_NFSE", { state: "visible" }); //agudar o elecmento ficar visivel
+    await page.goto("https://www.gp.srv.br/tributario/sinop/portal_login?1");
+
+    //console.log("prestado carregado!")
+  } catch (error) {
+    console.error("Ocorreu um erro:", error);
+  }
+}
+
+// Executa a função
+pref();

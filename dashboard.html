@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G B SISTEMAS - Menu Animado</title>
+    <link rel="stylesheet" href="style_dash.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Inicialização do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBSKZO6JqTPQIaVsuMRF_NifGvuiLT2STc",
+            authDomain: "controle-usuario-64b08.firebaseapp.com",
+            projectId: "controle-usuario-64b08",
+            storageBucket: "controle-usuario-64b08.firebasestorage.app",
+            messagingSenderId: "1005734164997",
+            appId: "1:1005734164997:web:0cfa0b869178aa4b947a6c"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        
+        // Verificar autenticação na página do Dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (!user) {
+                    // Se não estiver autenticado, redirecionar para o login
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Menu Lateral com efeito dropdown -->
+        <nav class="sidebar">
+            <div class="menu-header">GB SISTEMAS</div>
+            <ul class="menu-categories">
+                <li class="menu-category">
+                    <div class="category-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Prefeitura</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#"><i class="fas fa-pen"></i>NFS-e mensal</a></li>
+                        <li><a href="#"><i class="fas fa-dollar-sign"></i>NFS-e Anual</a></li>
+                        <li><a href="#"><i class="fas fa-history"></i>DARF</a></li>
+                    </ul>
+                </li>
+                <li class="menu-category">
+                    <div class="category-header">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Sefaz</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#"><i class="fas fa-file-alt"></i>Notas Fiscais 55</a></li>
+                        <li><a href="#"><i class="fas fa-receipt"></i>NFC-e</a></li>
+                        <li><a href="#"><i class="fas fa-truck"></i>Cte Emissor</a></li>
+                    </ul>
+                </li>
+                <li class="menu-category">
+                    <div class="category-header">
+                        <i class="fas fa-certificate"></i>
+                        <span>Certidões</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#"><i class="fas fa-building"></i>Ecac PJ</a></li>
+                        <li><a href="#"><i class="fas fa-user"></i>Ecac PF</a></li>
+                        <li><a href="#"><i class="fas fa-city"></i>Municipal</a></li>
+                        <li><a href="#"><i class="fas fa-landmark"></i>Sefaz</a></li>
+                        <li><a href="#"><i class="fas fa-id-card"></i>Regularidade FGTS</a></li>
+                    </ul>
+                </li>
+                <li class="menu-category">
+                    <div class="category-header">
+                        <i class="fas fa-cog"></i>
+                        <span>Empresas</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#"><i class="fas fa-question-circle"></i> Geral</a></li>
+                    </ul>
+                </li>
+                <li class="menu-category">
+                    <div class="category-header">
+                        <i class="fas fa-cog"></i>
+                        <span>Configurações</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#"><i class="fas fa-question-circle"></i> Cadastrar</a></li>
+                    </ul>
+                    <ul class="submenu">
+                        <li><a href="#"><i class="fas fa-question-circle"></i> Buscar</a></li>
+                    </ul>
+                </li>
+                <li class="menu-logout">
+                    <a href="#" id="btnLogout"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <header>
+                <h1>G B SISTEMAS</h1>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Filtrar" class="search-input">
+                </div>
+            </header>
+            
+            <div class="content">
+                <h2>Conteúdo principal</h2>
+                <p>Sistema de gestão GB Sistemas.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adicionar evento de clique para os cabeçalhos de categoria
+            const categoryHeaders = document.querySelectorAll('.category-header');
+            
+            categoryHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    // Toggle da classe 'active' no elemento pai (li.menu-category)
+                    this.parentElement.classList.toggle('active');
+                    
+                    // Atualizar o ícone da seta
+                    const arrow = this.querySelector('.arrow');
+                    if (this.parentElement.classList.contains('active')) {
+                        arrow.classList.remove('fa-chevron-down');
+                        arrow.classList.add('fa-chevron-up');
+                    } else {
+                        arrow.classList.remove('fa-chevron-up');
+                        arrow.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+            
+            // Abrir o primeiro menu por padrão
+            if (categoryHeaders.length > 0) {
+                categoryHeaders[0].click();
+            }
+            
+            // Get the search input element
+            const searchInput = document.getElementById('searchInput');
+            
+            // Add focus event listener
+            if (searchInput) {
+                searchInput.addEventListener('focus', function() {
+                    this.classList.add('focused');
+                });
+                
+                // Add blur event listener
+                searchInput.addEventListener('blur', function() {
+                    this.classList.remove('focused');
+                });
+                
+                // Set cursor to text
+                searchInput.style.cursor = 'text';
+            }
+            
+            // Adicionar evento de logout ao botão
+            const logoutButton = document.getElementById('btnLogout');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function() {
+                    // Chama a função de logout global
+                    if (typeof fazerLogout === 'function') {
+                        fazerLogout();
+                    } else {
+                        console.error('Função de logout não encontrada');
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- Importar auth.js para ter acesso à função fazerLogout -->
+    <script src="auth.js"></script>
+    <!-- Adicione antes do fechamento do </body> -->
+<script>
+    // Função para executar a automação
+    function executarAutomacao(empresaId) {
+        // URL relativa para a API (funciona tanto com Live Server quanto com seu servidor Express)
+        const apiUrl = '/api/execute-automation';
+        
+        console.log('Tentando iniciar automação para empresa:', empresaId);
+        
+        // Fazer a requisição para o backend
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ empresaId: empresaId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Falha na requisição: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Resposta da automação:', data);
+            // Você pode adicionar uma notificação visual para o usuário aqui
+            alert('Automação iniciada com sucesso!');
+        })
+        .catch(error => {
+            console.error('Erro ao iniciar automação:', error);
+            alert('Erro ao iniciar automação. Verifique o console para detalhes.');
+        });
+    }
+
+    // Modificar o evento de autenticação do Firebase para também disparar a automação
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar se o servidor de API está online
+        fetch('/api/status')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Status do servidor:', data);
+            })
+            .catch(error => {
+                console.error('Servidor de API não está respondendo:', error);
+            });
+            
+        // Adicionar o evento no Firebase Auth
+        if (firebase && firebase.auth) {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (!user) {
+                    // Se não estiver autenticado, redirecionar para o login
+                    window.location.href = 'index.html';
+                } else {
+                    // Usuário está autenticado - disparar a automação
+                    console.log('Usuário autenticado, iniciando automação...');
+                    
+                    // Use o ID da empresa que você quer automatizar
+                    const empresaId = '03.300.663/0001-10';
+                    
+                    // Iniciar a automação após um pequeno delay
+                    setTimeout(() => {
+                        executarAutomacao(empresaId);
+                    }, 1000);
+                }
+            });
+        } else {
+            console.error('Firebase Auth não está disponível');
+        }
+    });
+//http://localhost:5500/dashboard.html
+//abrir link no navegador
+</script>
+</body>
+</html>
