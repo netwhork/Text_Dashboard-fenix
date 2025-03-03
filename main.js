@@ -1,58 +1,35 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
-const { pref } = require('./test.js')
-const { initDatabase, getAllEmpresas } = require('./database.js')
+const express = require("express");
+const { pref } = require("./test.js");
+const { initDatabase, getAllEmpresas } = require("./database.js");
 
-function createWindow () {
-    const win = new BrowserWindow({
-        width: 1200,
-        height: 800,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    })
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-    win.loadFile('index.html')
-}
+app.use(express.json());
 
-app.whenReady().then(() => {
-    // Inicializa o banco de dados
-    initDatabase();
-    createWindow();
+// Inicializa o banco de dados
+initDatabase();
 
-    // Listener para buscar empresas
-    ipcMain.handle('get-empresas', async () => {
-        try {
-            const empresas = await getAllEmpresas();
-            return empresas;
-        } catch (error) {
-            console.error('Erro ao buscar empresas:', error);
-            throw error;
-        }
-    });
-
-    // Listener para executar pref
-    ipcMain.on('executar-pref', async (event, cnpj) => {
-        try {
-            await pref(cnpj)
-            event.reply('pref-resultado', { success: true, cnpj })
-        } catch (error) {
-            event.reply('pref-resultado', { success: false, error: error.message })
-        }
-    });
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow()
-        }
-    })
-})
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
+// Rota para buscar empresas
+app.get("/empresas", async (req, res) => {
+    try {
+        const empresas = await getAllEmpresas();
+        res.json(empresas);
+    } catch (error) {
+        console.error("Erro ao buscar empresas:", error);
+        res.status(500).json({ error: "Erro ao buscar empresas" });
     }
-})
+});
 
+// Rota para executar `pref`
+app.post("/executar-pref", async (req, res) => {
+    const { cnpj } = req.body;
+    try {
+        await pref(cnpj);
+        res.json({ success: true, cnpj });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
 
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
