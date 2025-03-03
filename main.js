@@ -3,7 +3,7 @@ const { pref } = require("./test.js");
 const { initDatabase, getAllEmpresas } = require("./database.js");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 1000;
 
 app.use(express.json());
 
